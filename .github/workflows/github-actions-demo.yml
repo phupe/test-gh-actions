@@ -5,12 +5,20 @@ on:
 
 env:
   MY_VAR: "Hello World"
+  REPOSITORY: "proteinfol"
 
 jobs:
   build_alphafold:
     if: vars.BUILD_ALPHAFOLD == 'true' 
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Extract Docker image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKER_USERNAME }}/$REPOSITORY
       - run: echo "${{ vars.BUILD_ALPHAFOLD }}"
       - run: echo "${{ env.MY_VAR }}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
